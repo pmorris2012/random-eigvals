@@ -56,7 +56,7 @@ def main(
         with open(out_path, "w") as f:
             json.dump(job, f, sort_keys=True, indent=4)
 
-    typer.echo(f"wrote config to {out_path}")
+    typer.echo(f"wrote {name}-[job_idx].json to {configs_dir}")
 
 
 if __name__ == "__main__":
