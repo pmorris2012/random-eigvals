@@ -21,7 +21,7 @@ def main(
 
     count = jobs * samples
     lin_steps = np.linspace(0, jobs, count - 1)
-    geom_steps = np.geomspace(n_start - 1, n - lin_steps[-1] - 2, count - 1)
+    geom_steps = np.geomspace(n_start - 1, n_end - lin_steps[-1] - 2, count - 1)
     base_steps = np.full(count, 1.0)
     base_steps[0] += 1
     base_steps[1:] += lin_steps + geom_steps
