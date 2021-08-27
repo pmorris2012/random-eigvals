@@ -1,6 +1,8 @@
 #custom configs
 configs
 configs/*.json
+work
+work/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
