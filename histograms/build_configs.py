@@ -12,8 +12,22 @@ def get_frame_strides(samples, frames):
     strides_end = strides + [samples] * frames
     return strides_start, strides_end
 
+def get_sample_steps(jobs, samples, n_start, n_end):
+    count = jobs * samples
+    lin_end = min(n_start + jobs, n_end)
+    linsteps = np.linspace(n_start, lin_end, count)
+    geomsteps = np.geomspace(1, n_end - lin_end + 1, count) - 1
+    base_steps = linsteps + geomsteps
+    return np.round(base_steps).astype(np.int32).reshape(jobs, samples)
+
+def get_frame_dims(jobs, frames, strides_start, strides_end, sample_steps):
+    frame_dims = np.zeros((jobs, frames * 2 - 1))
+    for i, (start, end) in enumerate(zip(strides_start, strides_end)):
+        frame_dims[:,i] = sample_steps[:,start:end].sum(axis=-1)
+    return frame_dims
+
 def main(
-    name: str, 
+    name: str,
     jobs: int = 8,
     frames: int = 30,
     samples: int = 100,
@@ -25,18 +39,14 @@ def main(
     configs_dir: str = "configs"
     ):
     strides_start, strides_end = get_frame_strides(samples, frames)
-
-    count = jobs * samples
-    linsteps = np.linspace(0, jobs, count - 1)
-    geomsteps = np.geomspace(n_start - 1, n_end - linsteps[-1] - 1, count - 1)
-    base_steps = np.full(count, 1.0)
-    base_steps[0] += n_start - 1
-    base_steps[1:] += linsteps + geomsteps
-    sample_steps = np.round(base_steps).astype(np.int32).reshape(jobs, samples)
-
-    frame_dims = np.zeros((jobs, frames * 2 - 1))
-    for i, (start, end) in enumerate(zip(strides_start, strides_end)):
-        frame_dims[:,i] = sample_steps[:,start:end].sum(axis=-1)
+    sample_steps = get_sample_steps(jobs, samples, n_start, n_end)
+    frame_dims = get_frame_dims(
+        jobs, 
+        frames, 
+        strides_start, 
+        strides_end, 
+        sample_steps
+    )
 
     for job_idx in range(jobs):
         job = {
