@@ -36,7 +36,8 @@ def main(
     bins_1d: int = 10000,
     bins_2d: int = 2160,
     blur: int = 9,
-    configs_dir: str = "configs"
+    configs_dir: Path = "configs",
+    work_dir: Path = "work"
     ):
     strides_start, strides_end = get_frame_strides(samples, frames)
     sample_steps = get_sample_steps(jobs, samples, n_start, n_end)
@@ -48,6 +49,7 @@ def main(
         sample_steps
     )
 
+    configs_dir.mkdir(parents = True, exist_ok = True)
     for job_idx in range(jobs):
         job = {
             "name": name,
@@ -59,7 +61,8 @@ def main(
             "strides_end": strides_end,
             "bins_1d": bins_1d,
             "bins_2d": bins_2d,
-            "blur": blur
+            "blur": blur,
+            "work_dir": str(work_dir)
         }
 
         out_path = Path(configs_dir, f"{name}-{job_idx}.json")
