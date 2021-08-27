@@ -1,4 +1,5 @@
 #custom configs
+configs
 configs/*.json
 
 # Byte-compiled / optimized / DLL files
