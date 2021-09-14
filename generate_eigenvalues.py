@@ -3,6 +3,11 @@ import typer
 import matplotlib.pyplot as plt
 
 from pathlib import Path
+import uuid
+
+
+def random_string():
+    return uuid.uuid4().hex
 
 
 def random_matrix(n):
@@ -20,7 +25,6 @@ def generate(n, iters):
 
 def main(
     samples: int = 1,
-    start_index: int = 0,
     dimension: int = 100,
     iterations: int = 1002,
     arrays_dir: Path = "arrays/"
@@ -30,7 +34,7 @@ def main(
     for s_idx in range(start_index, start_index + samples):
         eigenvalues = generate(dimension, iterations)
 
-        filename = F"n_{dimension}_i_{iterations}_s_{s_idx}.npy"
+        filename = F"n_{dimension}_i_{iterations}_{random_string()}.npy"
         save_path = Path(arrays_dir, filename)
         np.save(save_path, eigenvalues)
 
