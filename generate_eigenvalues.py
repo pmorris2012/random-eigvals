@@ -25,7 +25,7 @@ def main(
     iterations: int = 1002,
     arrays_dir: Path = "arrays/"
     ):
-    arrays_dir.mkdir(parent=True, exist_ok=True)
+    arrays_dir.mkdir(parents=True, exist_ok=True)
 
     for s_idx in range(start_index, start_index + samples):
         eigenvalues = generate(n, iters)
