@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#SBATCH --partition=shortq7
 #SBATCH --job-name=eigvals
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
