@@ -11,7 +11,7 @@ def main(
     filter_arrays: bool = True,
     dimension: int = 100,
     iterations: int = 1002,
-    arrays_dir: Path = "arrays/"
+    arrays_dir: Path = "arrays/",
     out_path: Path = "output/hist2d.npy"
     ):
 
