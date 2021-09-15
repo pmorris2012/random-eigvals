@@ -8,14 +8,17 @@ from pathlib import Path
 def main(
     bins: int = 2160,
     lim: float = 1.42,
-    filter: bool = True,
+    filter_arrays: bool = True,
     dimension: int = 100,
     iterations: int = 1002,
     arrays_dir: Path = "arrays/"
     out_path: Path = "output/hist2d.npy"
     ):
 
-    files = arrays_dir.glob(F"n_{dimension}_i_{iterations}_*.npy")
+    if filter_arrays:
+        files = arrays_dir.glob(F"n_{dimension}_i_{iterations}_*.npy")
+    else:
+        files = list(arrays_dir.iterdir())
     arrays = np.stack([np.load(f) for f in files])
 
     hue = np.zeros((bins, bins))
