@@ -42,6 +42,7 @@ def main(
 
     rgb = hsv_to_rgb(np.stack([hue, sat, val], axis=-1))
     
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     np.save(out_path, rgb)
 
 
