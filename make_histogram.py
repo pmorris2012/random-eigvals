@@ -1,6 +1,7 @@
 import numpy as np
 import typer
 from matplotlib.colors import hsv_to_rgb
+from scipy.ndimage import gaussian_filter
 
 from pathlib import Path
 
@@ -8,6 +9,7 @@ from pathlib import Path
 def main(
     bins: int = 2160,
     lim: float = 1.42,
+    blur_sigma: int = 0,
     filter_arrays: bool = True,
     dimension: int = 100,
     iterations: int = 1002,
@@ -32,7 +34,12 @@ def main(
             range=[[-lim, lim], [-lim, lim]],
             density=True
         )
-        hue += hist * (dim + 1)
+
+        blur_hist = hist
+        if blur_sigma > 1:
+            blur_hist = gaussian_filter(hist, sigma=blur_sigma)
+        
+        hue += blur_hist * (dim + 1)
         val += hist
     
     hue -= hue.min()
